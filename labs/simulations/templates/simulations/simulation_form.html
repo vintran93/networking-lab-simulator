@@ -1,0 +1,32 @@
+<!-- simulations/templates/simulations/simulation_form.html -->
+
+{% extends "simulations/base.html" %}
+
+{% block content %}
+
+    {% if simulation %}
+        <h2>✏️ Start Simulation</h2>
+    {% else %}
+        <h2>✨ Create New Simulation</h2>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        
+            {{ form.as_p }}
+        <input type="submit" type="text" value="Submit">
+    </form>
+    <!-- <script type="text/javascript">
+        function random_function(evt){
+            var bool = true;
+            (evt.keyCode==13)
+            {
+                bool=false;
+            }
+            return bool;
+        }
+    </script> -->
+    <a href="{% url 'simulation-list' %}">
+        Cancel
+    </a>
+{% endblock %}

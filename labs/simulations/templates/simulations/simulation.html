@@ -1,0 +1,10 @@
+<article>
+    <h4>{{ simulation.task }}</h4>
+   <h4>{{ simulation.question }}</h4>
+   <p>{{ simulation.labanswer }}</p>
+   <p>{{ simulation.useranswer }}</p>
+   <hr>
+   <a href="{% url 'simulation-update' simulation.id %}" role="button">
+        ✏️ Start Simulation
+    </a>
+</article>

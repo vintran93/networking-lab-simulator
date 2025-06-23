@@ -1,0 +1,23 @@
+<!-- cards/templates/cards/card_list.html -->
+
+{% extends "simulations/base.html" %}
+{% load humanize %}
+
+{% block content %}
+    <h2>
+        All Simulations
+    </h2>
+    <a href="{% url 'simulation-create' %}" role="button">
+        ✨ Create New Simulation
+    </a>
+
+    {% for simulation in simulation_list %}
+        {% ifchanged %}
+            <h3>🗃 {{ simulation.box | ordinal }} Box</h3>
+        {% endifchanged %}
+        {% include "simulations/simulation.html" %}
+        <article>
+            {{ simulation }}
+        </article>
+    {% endfor %}
+{% endblock content %}

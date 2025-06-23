@@ -1,7 +1,8 @@
 import pygame
 
 task = "\nTasks - Physical connectivity is implemented between the two Layer 2 switches, and the network connectivity between them must be configured. \n\n" \
-"1. Configure an LACP EtherChannel and number it as 44; configure it between switches SW1 and SW2 using interfaces Ethemet0/0 and Ethernet0/1 on both sides. The LACP mode must match on both ends.\n" \
+"1. Configure an LACP EtherChannel and number it as 44; configure it between switches SW1 and SW2 using interfaces Ethemet0/0 and Ethernet0/1 on both sides. \n \
+The LACP mode must match on both ends.\n" \
 "2. Configure the EtherChannel as a trunk link.\n"\
 "3. Configure the trunk link with 802.1q tags.\n"\
 "4. Configure VLAN 'MONITORING' as the untagged VLAN of the EtherChannel.\n"
@@ -21,8 +22,16 @@ def start_simulation(task):
     listA4 = []
     listA5 = []
 
-    listA2 = ["interface range eth0/0-1", "channel-group 44 mode active", "interface port44", "switchport trunk encapsulation dot1q", "switchport mode trunk", "switchport trunk native vlan 746",
-        "no shutdown", "end" 
+    #Answers for SW1 and SW2
+    listA2 = [
+        "interface range eth0/0-1", 
+        "channel-group 44 mode active", 
+        "interface port44", 
+        "switchport trunk encapsulation dot1q", 
+        "switchport mode trunk", 
+        "switchport trunk native vlan 746",
+        "no shutdown", 
+        "end" 
     ]
 
     width = 1000

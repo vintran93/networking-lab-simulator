@@ -1,5 +1,11 @@
+from pyscript import document
 import pygame
 import time
+
+print("Hello world from the console")
+
+output_div = document.querySelector("#textarea")
+output_div.innterText = "Hello World from the web"
 
 
 menu_options = ("h", "x", "s")
@@ -32,8 +38,6 @@ while True:
         print()
         print("Option not available!")
     
-         
-
 task = "\nTasks - All physical cabling is in place and verified. Connectivity between all four switches must be established and operational. All ports are pre-configured as 802.1q trunks.\n\n" \
 "1. Configure both SW-1 and SW2 ports e0/1 and e0/2 to permit only the allowed VLANs\n" \
 "2. Configure both SW-1 and SW-2 e0/1 ports to send and receive untagged traffic over VLAN99\n"\
@@ -65,12 +69,34 @@ def start_simulation(task):
     listA9 = []
     listA10 = []
 
-    listA2 = ["enable", "config t", "int e0/1", "switchport trunk allowed vlan 56, 77, 99", "int e0/2", "switchport trunk allowed vlan 56, 77, 99",
-        "exit", "int e0/1", "switchport trunk native vlan 99", "end", "wr" 
+    #Answers for SW1 and SW2
+    listA2 = [
+        "enable", 
+        "config t", 
+        "int e0/1", 
+        "switchport trunk allowed vlan 56, 77, 99", 
+        "int e0/2", 
+        "switchport trunk allowed vlan 56, 77, 99",
+        "exit", 
+        "int e0/1", 
+        "switchport trunk native vlan 99", 
+        "end", 
+        "wr" 
     ]
 
-    listA7 = ["enable", "config t", "int range e0-1", "channel-group 34 mode active", "exit", "int po 34",
-        "switchport trunk allowed vlan 56, 77, 99", "int e0/2", "switchport trunk allowed vlan 56, 77, 99", "end", "wr" 
+    #Answers for SW3 and SW4
+    listA7 = [
+        "enable", 
+        "config t", 
+        "int range e0-1", 
+        "channel-group 34 mode active", 
+        "exit", 
+        "int po 34",
+        "switchport trunk allowed vlan 56, 77, 99", 
+        "int e0/2", 
+        "switchport trunk allowed vlan 56, 77, 99", 
+        "end", 
+        "wr" 
     ]
 
     listS = []
@@ -90,10 +116,6 @@ def start_simulation(task):
 
     x = 300
     y = 250
-
-    # def choose_switch():
-    #     while True:
-    #     switch_number = (input("Enter the switch number you would like to configure: "))
 
     def choose_switch():
         print("\n")
@@ -119,7 +141,6 @@ def start_simulation(task):
             print("Not a valid option. Please try again. ")
             choose_switch()
     
-
     def compare_SW1():
         while True:
             answer = (input("Enter the configuration for SW1: "))
@@ -137,10 +158,6 @@ def start_simulation(task):
                 if set(listA3) == set(listA2):
                     print("You are correct!")
                     listS.append("a")
-                    # compare_SW2()
-                    # pygame.quit()
-                    # exit()  
-                    # break
                     if all(item in listS for item in list_to_check):
                         print("You have completed all switch configurations.")
                         simulation_over()
@@ -149,10 +166,6 @@ def start_simulation(task):
                     
                 else:
                     print("You are incorrect!")
-                    # print("End --> ")   
-                    # pygame.quit()
-                    # exit()  
-                    # break
                     choose_switch()
 
     def compare_SW2():
@@ -172,10 +185,6 @@ def start_simulation(task):
                 if set(listA5) == set(listA2):
                     print("You are correct!")
                     listS.append("b")
-                    # compare_SW3()
-                    # pygame.quit()
-                    # exit()
-                    # break
                     if all(item in listS for item in list_to_check):
                         print("You have completed all switch configurations.")
                         simulation_over()
@@ -204,24 +213,16 @@ def start_simulation(task):
                 if set(listA8) == set(listA7):
                     print("You are correct!")
                     listS.append("c")
-                    # compare_SW4()
-                    # pygame.quit()
                     if all(item in listS for item in list_to_check):
                         print("You have completed all switch configurations.")
                         simulation_over()
                     else:
                         choose_switch()
-                    
-                    
                 else:
                     print("You are incorrect!")
                     print("\n")   
-                    # pygame.quit()
-                    # exit()  
-                    # break
                     choose_switch()
                     
-    
     def compare_SW4():
         while True:
             answer = (input("Enter the configuration for SW4: "))
@@ -239,8 +240,6 @@ def start_simulation(task):
                 if set(listA10) == set(listA7):
                     print("You are correct!")
                     listS.append("d")
-                    # print("End --> ")
-                    # pygame.quit()
                     if all(item in listS for item in list_to_check):
                         print("You have completed all switch configurations.")
                         simulation_over()
@@ -249,10 +248,6 @@ def start_simulation(task):
                     
                 else:
                     print("You are incorrect!")
-                    # print("End --> ")   
-                    # pygame.quit()
-                    # exit()  
-                    # break  
                     choose_switch()
 
     def simulation_over():
