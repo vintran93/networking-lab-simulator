@@ -1,0 +1,175 @@
+@app.route('/create_template')
+def create_template():
+    template_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Lab Simulation</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #1e1e1e;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .terminal {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            height: 600px;
+            overflow-y: auto;
+            border: 2px solid #444;
+        }
+        .network-diagram {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px solid #444;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .switch {
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .topology {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            width: 300px;
+            height: 200px;
+        }
+        #output {
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+        .input-area {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            display: flex;
+            gap: 10px;
+        }
+        input[type="text"] {
+            background-color: #444;
+            color: white;
+            border: 1px solid #666;
+            padding: 8px;
+            border-radius: 4px;
+            flex-grow: 1;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <div class="topology-diagram">
+        <img src="C:\Users\vince\OneDrive\Desktop\IT Career Path\Cisco Certified Network Associate CCNA\images\labsim1.jpg"
+             alt="Network Topology Diagram" 
+             style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+</head>
+<body>
+    <div class="container">
+        <div class="terminal">
+            <h2>Networking Lab Simulation</h2>
+            <div id="output">Welcome to the Networking Lab Simulation!
+
+Tasks - All physical cabling is in place and verified.
+Connectivity between all four switches must be established and operational.
+All ports are pre-configured as 802.1q trunks.
+
+1. Configure both SW-1 and SW2 ports e0/1 and e0/2 to permit only the allowed VLANs
+2. Configure both SW-1 and SW-2 e0/1 ports to send and receive untagged traffic over VLAN99
+3. Configure both SW-3 and SW-4 ports e0/2 to permit only the allowed VLANs
+4. Configure both SW-3 and SW-4 ports e0/0 and e0/1 for link aggregation using the industry standard protocol
+5. Permit only the allowed VLANs on the new link
+
+h = help
+x = exit
+s = start
+
+Enter an option:</div>
+            <div class="input-area">
+                <input type="text" id="command-input" placeholder="Enter command...">
+                <button onclick="sendCommand()">Send</button>
+            </div>
+        </div>
+        
+        <div class="network-diagram">
+            <div class="topology">
+                <div class="switch">SW-1</div>
+                <div class="switch">SW-2</div>
+                <div class="switch">SW-3</div>
+                <div class="switch">SW-4</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sendCommand() {
+            const input = document.getElementById('command-input');
+            const command = input.value.trim();
+            if (!command) return;
+            
+            // Clear input
+            input.value = '';
+            
+            // Send command to server
+            fetch('/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({command: command})
+            })
+            .then(response => response.json())
+            .then(data => {
+                const output = document.getElementById('output');
+                output.textContent += '\\n> ' + command + '\\n' + data.output + '\\n';
+                output.scrollTop = output.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        // Handle Enter key
+        document.getElementById('command-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendCommand();
+            }
+        });
+    </script>
+</body>
+</html>'''

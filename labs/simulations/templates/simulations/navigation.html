@@ -1,5 +1,8 @@
 <!-- simulations/templates/simulations/navigation.html -->
 
 <nav>
-    <a href="{% url 'simulation-list' %}">🗂 All Simulations</a>
+    <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="{% url 'quiz_list' %}">Quizzes</a>
+        <a class="nav-link" href="{% url 'random_quiz' %}">Random Quiz</a>
+    </div>
 </nav>

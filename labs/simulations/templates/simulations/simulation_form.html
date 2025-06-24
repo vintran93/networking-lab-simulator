@@ -5,7 +5,7 @@
 {% block content %}
 
     {% if simulation %}
-        <h2>✏️ Start Simulation</h2>
+        <h2>✏️ Edit Simulation</h2>
     {% else %}
         <h2>✨ Create New Simulation</h2>
     {% endif %}
@@ -16,7 +16,7 @@
             {{ form.as_p }}
         <input type="submit" type="text" value="Submit">
     </form>
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         function random_function(evt){
             var bool = true;
             (evt.keyCode==13)
@@ -25,7 +25,7 @@
             }
             return bool;
         }
-    </script> -->
+    </script>
     <a href="{% url 'simulation-list' %}">
         Cancel
     </a>

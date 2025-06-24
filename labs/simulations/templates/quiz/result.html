@@ -1,0 +1,76 @@
+<!-- quiz/result.html -->
+{% extends 'quiz/base.html' %}
+
+{% block title %}Quiz Result - Box {{ simulation.box }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box-number">
+            <strong>Box {{ simulation.box }}</strong> | Completed: {{ simulation.date_created|date:"M d, Y" }}
+        </div>
+
+        {% if simulation.task %}
+        <div class="task-box">
+            <h5><i class="fas fa-tasks"></i> Task</h5>
+            <p>{{ simulation.task }}</p>
+        </div>
+        {% endif %}
+
+        <div class="question-box">
+            <h4><i class="fas fa-question-circle"></i> Question</h4>
+            <p class="lead">{{ simulation.question }}</p>
+        </div>
+
+        {% if is_correct %}
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-check-circle"></i> Correct!</h4>
+            <p>Congratulations! Your answer is correct.</p>
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-times-circle"></i> Incorrect</h4>
+            <p>Your answer was not correct. Please review the correct answer below.</p>
+        </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-user"></i> Your Answer</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ simulation.useranswer }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="fas fa-flask"></i> Correct Answer</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ simulation.labanswer }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+            <a href="{% url 'next_quiz' current_simulation_id=simulation.id %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-arrow-right"></i> Next Question
+            </a>
+            <a href="{% url 'quiz_question' simulation_id=simulation.id %}" class="btn btn-outline-warning">
+                <i class="fas fa-redo"></i> Try Again
+            </a>
+            <a href="{% url 'quiz_list' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-list"></i> All Quizzes
+            </a>
+            <a href="{% url 'random_quiz' %}" class="btn btn-outline-info">
+                <i class="fas fa-random"></i> Random Quiz
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

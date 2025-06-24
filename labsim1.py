@@ -1,11 +1,11 @@
-from pyscript import document
+# from pyscript import document
 import pygame
 import time
 
 print("Hello world from the console")
 
-output_div = document.querySelector("#textarea")
-output_div.innterText = "Hello World from the web"
+# output_div = document.querySelector("#textarea")
+# output_div.innterText = "Hello World from the web"
 
 
 menu_options = ("h", "x", "s")
