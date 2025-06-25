@@ -3,3 +3,13 @@
     border-radius: 10px;
 
 }
+
+#myDiv {
+  counter-reset: line-number;
+}
+
+#myDiv p::before {
+  counter-increment: line-number;
+  content: counter(line-number);
+  margin-right: 5px; /* Adjust spacing as needed */
+}

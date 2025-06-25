@@ -25,6 +25,3 @@ urlpatterns = [
     path('quiz/random/', views.random_quiz_view, name='random_quiz'),
 ]
 
-
-
-

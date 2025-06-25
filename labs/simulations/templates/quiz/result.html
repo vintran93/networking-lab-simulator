@@ -1,4 +1,4 @@
-<!-- quiz/result.html -->
+<!-- quiz/result.html - Updated with image display -->
 {% extends 'quiz/base.html' %}
 
 {% block title %}Quiz Result - Box {{ simulation.box }}{% endblock %}
@@ -14,6 +14,53 @@
         <div class="task-box">
             <h5><i class="fas fa-tasks"></i> Task</h5>
             <p>{{ simulation.task }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Image Display Section for Results Page -->
+        {% if simulation.image %}
+        <div class="image-section mb-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5><i class="fas fa-image"></i> Simulation Image</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img 
+                        src="{{ simulation.image.url }}" 
+                        class="img-fluid rounded shadow-sm" 
+                        alt="Simulation Image for Box {{ simulation.box }}"
+                        style="max-height: 300px; cursor: pointer;"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#resultImageModal"
+                        title="Click to view full size"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Modal for Results Page -->
+        <div class="modal fade" id="resultImageModal" tabindex="-1" aria-labelledby="resultImageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resultImageModalLabel">Simulation Image - Box {{ simulation.box }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img 
+                            src="{{ simulation.image.url }}" 
+                            class="img-fluid" 
+                            alt="Full size simulation image"
+                        >
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ simulation.image.url }}" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Open in New Tab
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
 

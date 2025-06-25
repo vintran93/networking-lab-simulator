@@ -1,3 +1,4 @@
+<!-- quiz/question.html - Updated with image display -->
 {% extends 'quiz/base.html' %}
 
 {% block title %}Quiz Question - Box {{ simulation.box }}{% endblock %}
@@ -10,9 +11,59 @@
         </div>
 
         {% if simulation.task %}
-        <div class="task-box">
+        <div class="task-box" id="myDiv">
             <h5><i class="fas fa-tasks"></i> Task</h5>
             <p>{{ simulation.task }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Image Display Section -->
+        {% if simulation.image %}
+        <div class="image-section mb-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5><i class="fas fa-image"></i> Simulation Image</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img 
+                        src="{{ simulation.image.url }}" 
+                        class="img-fluid rounded shadow-sm" 
+                        alt="Simulation Image for Box {{ simulation.box }}"
+                        style="max-height: 400px; cursor: pointer;"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#imageModal"
+                        title="Click to view full size"
+                    >
+                    <div class="mt-2">
+                        <small class="text-muted">Click image to view full size</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Modal for Full Size View -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">Simulation Image - Box {{ simulation.box }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img 
+                            src="{{ simulation.image.url }}" 
+                            class="img-fluid" 
+                            alt="Full size simulation image"
+                        >
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ simulation.image.url }}" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-external-link-alt"></i> Open in New Tab
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
 
@@ -23,11 +74,17 @@
 
         <div class="answer-section">
             <h5><i class="fas fa-pencil-alt"></i> Your Answer</h5>
-            <form method="post" onkeydown="return event.key != 'Enter';">
+            <form method="post" id="answerForm">
                 {% csrf_token %}
                 <div class="mb-3">
                     {{ form.answer.label_tag }}
-                    {{ form.answer }}
+                    <textarea 
+                        name="{{ form.answer.name }}" 
+                        id="{{ form.answer.id_for_label }}"
+                        class="form-control"
+                        rows="6"
+                        placeholder="Enter your answer here. You can use multiple lines and press Enter for new lines."
+                        style="resize: vertical; min-height: 120px;">{{ form.answer.value|default_if_none:"" }}</textarea>
                     {% if form.answer.errors %}
                         <div class="text-danger">
                             {% for error in form.answer.errors %}
@@ -35,6 +92,9 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+                    <small class="form-text text-muted">
+                        Press Enter for new lines. Use Ctrl+Enter (Cmd+Enter on Mac) to submit.
+                    </small>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-between">
                     <button type="submit" class="btn btn-primary btn-lg">
@@ -44,17 +104,55 @@
                         <i class="fas fa-list"></i> Back to List
                     </a>
                 </div>
-                <script type="text/javascript">
-                    
-                </script>
             </form>
         </div>
 
         {% if simulation.useranswer %}
         <div class="alert alert-info mt-3">
-            <strong>Previous Answer:</strong> {{ simulation.useranswer }}
+            <strong>Previous Answer:</strong> 
+            <div style="white-space: pre-wrap;">{{ simulation.useranswer }}</div>
         </div>
         {% endif %}
     </div>
 </div>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.querySelector('textarea[name="{{ form.answer.name }}"]');
+    const form = document.getElementById('answerForm');
+    
+    // Allow Ctrl+Enter (or Cmd+Enter on Mac) to submit the form
+    textarea.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+            event.preventDefault();
+            form.submit();
+        }
+    });
+    
+    // Auto-resize textarea as user types
+    textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.max(120, this.scrollHeight) + 'px';
+    });
+    
+    // Set initial height if there's existing content
+    if (textarea.value.trim()) {
+        textarea.style.height = 'auto';
+        textarea.style.height = Math.max(120, textarea.scrollHeight) + 'px';
+    }
+
+    // Image zoom functionality (optional enhancement)
+    const images = document.querySelectorAll('.image-section img');
+    images.forEach(img => {
+        img.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.02)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        img.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
 {% endblock %}
